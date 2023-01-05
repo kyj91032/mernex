@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="/public/main.css">
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    
+    
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <!-- jquery를 이용한 ajax 요청 --> 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+    <!-- socket.io 설치 -->
+
+    <div>채팅방</div>
+    <div id="content"></div>
+    <input id="input1">
+    <button id="send">서버에 메세지 보내기</button>
+    <button id="room1">채팅방1 입장</button>
+    <button id="room1-send">채팅방1에서 채팅하기</button>
+
+    <script>
+        var socket = io();
+
+        $('#room1-send').click(function(){ // 누르면 현재 유저가 채팅방 입장
+          socket.emit('room1-send', '반가워 채팅방1 사람들아') // 유저가 서버에 요청
+        })
+
+        $('#room1').click(function(){ // 누르면 현재 유저가 채팅방 입장
+          socket.emit('joinroom', '채팅방입장시켜줘') // 유저가 서버에 요청
+        })
+
+        $('#send').click(function(){
+            socket.emit('user-send', $('#input1').val()) // 유저가 서버에 보냄
+            // (이벤트명, 전달할 데이터)
+        });
+
+        socket.on('broadcast', function(data){ // (io.emit을 수신. 이벤트 리스너) 서버가 broadcast라는 이름으로 data 수신
+            $('#content').append('<div>'+ data +'</div>')
+        });
+
+        
+
+    </script>
+
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+  </body>
+</html>
